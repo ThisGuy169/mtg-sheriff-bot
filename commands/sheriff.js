@@ -5,5 +5,6 @@ module.exports = {
 		if(message.mentions.length < 5){
             return message.channel.send('Five players are needed for a game of sheriff');
         }
+		console.log(args);
 	},
 };
