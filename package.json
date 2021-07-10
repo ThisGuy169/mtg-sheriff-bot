@@ -1,0 +1,31 @@
+{
+  "name": "mtg-sheriff-bot",
+  "version": "1.0.0",
+  "description": "Discord bot to create and manage sheriff games",
+  "main": "bot.js",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.30.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThisGuy169/mtg-sheriff-bot.git"
+  },
+  "keywords": [
+    "mtg",
+    "sheriff"
+  ],
+  "author": "ThisGuy169",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ThisGuy169/mtg-sheriff-bot/issues"
+  },
+  "homepage": "https://github.com/ThisGuy169/mtg-sheriff-bot#readme"
+}
