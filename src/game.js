@@ -1,5 +1,5 @@
 const fs = require('fs');
-class Game{
+module.exports = class Game{
     constructor(creator, createdOn, players){
         this.Creator = creator;
         this.CreatedOn = createdOn;
