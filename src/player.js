@@ -11,12 +11,16 @@ module.exports = class Player{
 		let list = [];
 		let person = null;
         let role = null;
+		let index = null;
 
 		mentions.forEach(function(mention){
             person = mention;
             role = roles[Math.floor(Math.random() * roles.length)];
             list.push(new Player(person, role));
-            roles.pop(role);
+			index = roles.indexOf(role);
+			if (index !== -1) {
+				roles.splice(index, 1);
+			}
 		});
 		// return list of assign Players
 		return list;
@@ -33,7 +37,7 @@ module.exports = class Player{
 			// message.setImage(player.Role.Image);
 			// p.person.send(embed=embedVar, file=file)
 			console.log(message)
-			player.Person.send(message)
+			//player.Person.send(message)
 
 		})
 		
