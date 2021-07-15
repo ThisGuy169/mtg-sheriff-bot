@@ -1,19 +1,15 @@
 // empty file for right now
 
 const Role = require('../src/role.js');
+const Player = require('../src/player.js');
 let role = new Role();
+let player = new Player();
 console.log(Role.colors);
 
-// let roles = new Role().loadRoles();
-// let randomRoles = [];
-// let tempRole = null;
-// console.log("roles", roles);
+let players = ['1', '2', '3', '4', '5'];
 
-// for(let i = 0; i < 5; i++)
-// {
-//     tempRole = roles[Math.floor(Math.random() * roles.length)];
-//     randomRoles.push(tempRole);
-//     roles.pop(tempRole);
-// }
+let assigned = player.assignPlayers(players, role.loadRoles())
 
-// console.log(randomRoles)
+console.log(assigned)
+
+let test = 1;
