@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { MessageEmbed } = require('discord.js');
 const Player = require('../src/player.js');
 const Role = require('../src/role.js');
 module.exports = class Game{
