@@ -10,16 +10,4 @@ module.exports =  class Role{
 		this.Image = image;
         this.Color = color;
 	}
-
-    loadRoles(){
-        let dataFile = fs.readFileSync('./data/roles.json', 'utf8');
-        let roleData = JSON.parse(dataFile);
-        let roleList = [];
-
-        roleData.forEach(element => {
-            roleList.push(new Role(element.roleID, element.title, element.description, element.image, element.color));
-        });
-
-        return roleList;
-    }
 }
