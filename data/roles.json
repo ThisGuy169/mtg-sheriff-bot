@@ -3,7 +3,7 @@
         "__type__": "Role",
         "roleID": 1,
         "title": "Sheriff",
-        "description": "- Be the last man standing at all costs!\\n- Defeat the Outlaws and the Renegade.\\n- Reveal your role.\\n- Start at 60 life.\\n- You start your turn first.",
+        "description": "- Be the last man standing at all costs!\n- Defeat the Outlaws and the Renegade.\n- Reveal your role.\n- Start at 60 life.\n- You start your turn first.",
         "image": "images/W.png",
         "color": "gold"
     },
@@ -11,7 +11,7 @@
         "__type__": "Role",
         "roleID": 2,
         "title": "Deputy",
-        "description": "- Assist the Sheriff!\\n- Defeat the Outlaws and the Renegade.\\n- You win as long as the sheriff is the last man standing.",
+        "description": "- Assist the Sheriff!\n- Defeat the Outlaws and the Renegade.\n- You win as long as the sheriff is the last man standing.",
         "image": "images/G.png",
         "color": "lightGreen"
     },
@@ -19,7 +19,7 @@
         "__type__": "Role",
         "roleID": 3,
         "title": "Renegade",
-        "description": "- You're the wildcard! Use your wit...\\n- Before defeating the Sheriff, you must defeat the Outlaws first.",
+        "description": "- You're the wildcard! Use your wit...\n- Before defeating the Sheriff, you must defeat the Outlaws first.",
         "image": "images/U.png",
         "color": "blue"
     },
