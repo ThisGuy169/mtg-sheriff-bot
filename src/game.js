@@ -3,11 +3,12 @@ const { MessageEmbed } = require('discord.js');
 const Player = require('../src/player.js');
 const Role = require('../src/role.js');
 module.exports = class Game{
-    constructor(creator, createdOn, players){
+    constructor(creator, createdOn, users){
         this.Creator = creator;
         this.CreatedOn = createdOn;
-        this.Players = players;
-        this.roles = this.loadRoles();
+        this.Roles = this.loadRoles();
+        this.Players = this.assignPlayerRoles(users);
+        this.messagePlayers();
     }
 
     loadGames(){
@@ -34,16 +35,15 @@ module.exports = class Game{
         return roleList;
     }
 
-    assignPlayers(mentions, roles){
+    assignPlayerRoles(users){
 		let list = [];
-		let person = null;
         let role = null;
 		let index = null;
+        let roles = this.Roles;
 
-		players.forEach(function(player){
-            person = player;
+		users.forEach(function(user){
             role = roles[Math.floor(Math.random() * roles.length)];
-            list.push(new Player(person, role));
+            list.push(new Player(user, role));
 			index = roles.indexOf(role);
 			if (index !== -1) {
 				roles.splice(index, 1);
@@ -54,7 +54,7 @@ module.exports = class Game{
 	}
 
     messagePlayers(){
-		players.forEach(player => {
+		this.Players.forEach(player => {
 			let message = new MessageEmbed();
 			message.setColor(Role.colors[player.Role.Color]);
 			message.setDescription(player.Role.Description);
@@ -63,9 +63,8 @@ module.exports = class Game{
 			// message.setImage(player.Role.Image);
 			// p.person.send(embed=embedVar, file=file)
 			console.log(message)
-			//player.Person.send(message)
+			player.User.send(message)
 
-		})
-		
+		});
 	}
 }
