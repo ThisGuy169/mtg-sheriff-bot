@@ -67,7 +67,7 @@ module.exports = class Game{
                     name: 'role.png'
                 }]
             }
-			player.User.send(message);
+			player.send(message);
 		});
 	}
 }

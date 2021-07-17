@@ -3,4 +3,8 @@ module.exports = class Player{
 		this.User = user;
 		this.Role = role;
 	}
+
+	send(message){
+		this.User.send(message);
+	}
 }
