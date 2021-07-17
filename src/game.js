@@ -55,16 +55,19 @@ module.exports = class Game{
 
     messagePlayers(){
 		this.Players.forEach(player => {
-			let message = new MessageEmbed();
-			message.setColor(Role.colors[player.Role.Color]);
-			message.setDescription(player.Role.Description);
-			message.setTitle(player.Role.Title);
-			// message.setThumbnail(player.Role.Image);
-			// message.setImage(player.Role.Image);
-			// p.person.send(embed=embedVar, file=file)
-			console.log(message)
-			player.User.send(message)
-
+			let embed = new MessageEmbed();
+			embed.setColor(Role.colors[player.Role.Color]);
+			embed.setDescription(player.Role.Description);
+			embed.setTitle(player.Role.Title);
+			embed.setThumbnail("attachment://role.png");
+            let message = {
+                embed,
+                files: [{
+                    attachment: player.Role.Image,
+                    name: 'role.png'
+                }]
+            }
+			player.User.send(message);
 		});
 	}
 }
