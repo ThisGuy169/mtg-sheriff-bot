@@ -1,6 +1,6 @@
 module.exports = class Player{
-	constructor(mention, role) {
-		this.Mention = mention;
+	constructor(user, role) {
+		this.User = user;
 		this.Role = role;
 	}
 }
