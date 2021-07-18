@@ -12,6 +12,7 @@ const prefix = process.env.DISCORD_BOT_PREFIX;
 const client = new Client();
 client.once('ready', () => {
 	console.log('Ready!');
+  client.user.setActivity('!sheriff !help');
 });
 // login to Discord with your app's token
 client.login(process.env.DISCORD_BOT_TOKEN);

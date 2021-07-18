@@ -2,8 +2,11 @@ const fs = require('fs');
 const { MessageEmbed } = require('discord.js');
 const Player = require('../src/player.js');
 const Role = require('../src/role.js');
+const randomWords = require('random-words');
+
 module.exports = class Game{
-    constructor(creator, createdOn, users){
+    constructor(creator, createdOn, users, name){
+        this.Name = name ?? this.createName();
         this.Creator = creator;
         this.CreatedOn = createdOn;
         this.Roles = this.loadRoles();
@@ -11,13 +14,24 @@ module.exports = class Game{
         this.messagePlayers();
     }
 
+    createName()
+    {
+        let gameList = this.loadGames();
+        let gameName = randomWords({exactly:1, wordsPerString:2, separator:'-', maxLength: 6});
+        while(gameList.some(g => g.Name === gameName)){
+            gameName = randomWords({exactly:1, wordsPerString:2, separator:'-', maxLength: 6});
+        }
+
+        return gameName;
+    }
+
     loadGames(){
         let gameList = [];
-        let dataFile = fs.readFile('./data/currentGames.json', 'utf8');
+        let dataFile = fs.readFileSync('./data/currentGames.json', 'utf8');
         let gameData = JSON.parse(dataFile);
 
         gameData.forEach(element => {
-            gameList.pop(new Game(element.Creator, element.CreatedOn, element.Players));
+            gameList.pop(new Game(element.Creator, element.CreatedOn, element.Players, element.Name));
         });
 
         return gameList;
@@ -33,6 +47,15 @@ module.exports = class Game{
         });
 
         return roleList;
+    }
+
+    saveGame(game)
+    {
+        let gameList = this.loadGames();
+        gameList.push(game);
+        let gameJSON = JSON.stringify(game);
+        
+        fs.writeFileSync('./data/currentGames.json', gameJSON);
     }
 
     assignPlayerRoles(users){
