@@ -16,6 +16,12 @@ module.exports = {
 		let time = new Date(Date.now()).toLocaleTimeString("en-US");
 		let createdOn = `${date} ${time}`;
 		let users = message.mentions.users;
-		new Game(creator, createdOn, users);
+		let newGame = new Game(creator, createdOn, users);
+		newGame.saveGame(newGame);
+
+		let sheriff = newGame.Players.find(player => {
+			return player.Role.RoleID === 1
+		});
+		message.reply(`Good luck Sheriff ${sheriff.User.tag}! Game name ${newGame.Name}`)
 	},
 };
