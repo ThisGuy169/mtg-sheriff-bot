@@ -10,7 +10,7 @@ module.exports = {
         // }
 
 		// Username#1318
-		let creator = `${message.author.username}#${message.author.discriminator}`;
+		let creator = `${message.author.tag}`;
 		// 07/16/2021 7:51:47 PM
 		let date = new Date(Date.now()).toLocaleDateString("en-US");
 		let time = new Date(Date.now()).toLocaleTimeString("en-US");
