@@ -12,12 +12,12 @@ module.exports = {
     //     return message.channel.send('Too many players for a game of sheriff');
     // }
 
+
     let creator = `${message.author.tag}`;
     let date = new Date(Date.now()).toLocaleDateString("en-US");
     let time = new Date(Date.now()).toLocaleTimeString("en-US");
     let createdOn = `${date} ${time}`;
     let users = message.mentions.users;
-
     let newGame = new Game(null, creator, createdOn, null);
     newGame.assignPlayerRoles(users);
     newGame.messagePlayers();

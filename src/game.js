@@ -137,6 +137,7 @@ module.exports = class Game {
     return result[0];
   }
 
+
   static revealRoles(gameList) {
     //Do Reveal message
   }
