@@ -1,112 +1,143 @@
-const fs = require('fs');
-const { MessageEmbed } = require('discord.js');
-const Player = require('../src/player.js');
-const Role = require('../src/role.js');
-const randomWords = require('random-words');
-module.exports = class Game{
-    constructor(name, creator, createdOn, users){
-        this.Name = name ?? this.createName();
-        this.Creator = creator;
-        this.CreatedOn = createdOn;
-        this.Players = users;
+const fs = require("fs");
+const { MessageEmbed } = require("discord.js");
+const Player = require("../src/player.js");
+const Role = require("../src/role.js");
+const randomWords = require("random-words");
+module.exports = class Game {
+  constructor(name, creator, createdOn, users) {
+    this.Name = name ?? this.createName();
+    this.Creator = creator;
+    this.CreatedOn = createdOn;
+    this.Players = users;
+  }
+
+  createName() {
+    let gameList = this.loadGames();
+    let gameName = randomWords({
+      exactly: 1,
+      wordsPerString: 2,
+      separator: "-",
+      maxLength: 6,
+    })[0];
+    while (gameList.some((g) => g.Name === gameName)) {
+      gameName = randomWords({
+        exactly: 1,
+        wordsPerString: 2,
+        separator: "-",
+        maxLength: 6,
+      })[0];
     }
 
-    createName(){
-        let gameList = this.loadGames();
-        let gameName = randomWords({exactly:1, wordsPerString:2, separator:'-', maxLength: 6})[0];
-        while(gameList.some(g => g.Name === gameName)){
-            gameName = randomWords({exactly:1, wordsPerString:2, separator:'-', maxLength: 6})[0];
-        }
+    return gameName;
+  }
 
-        return gameName;
+  static loadGames() {
+    let gameList = [];
+    let dataFile = fs.readFileSync("./data/currentGames.json", "utf8");
+    if (dataFile === "") return gameList;
+
+    let gameData = JSON.parse(dataFile);
+    if (!Array.isArray(gameData)) {
+      gameData = [gameData];
     }
+    gameData.forEach((element) => {
+      gameList.push(
+        new Game(
+          element.Name,
+          element.Creator,
+          element.CreatedOn,
+          element.Players
+        )
+      );
+    });
 
-    loadGames(){
-        let gameList = [];
-        let dataFile = fs.readFileSync('./data/currentGames.json', 'utf8');
-        if(dataFile === '') return gameList;
-        
-        let gameData = JSON.parse(dataFile);
-        gameData.forEach(element => {
-            gameList.pop(new Game(element.Name, element.Creator, element.CreatedOn, element.Players));
-        });
+    return gameList;
+  }
 
-        return gameList;
+  static loadRoles() {
+    let roleList = [];
+    let dataFile = fs.readFileSync("./data/roles.json", "utf8");
+    if (dataFile === "") return roleList;
+
+    let roleData = JSON.parse(dataFile);
+
+    roleData.forEach((element) => {
+      roleList.push(
+        new Role(
+          element.roleID,
+          element.title,
+          element.description,
+          element.image,
+          element.color
+        )
+      );
+    });
+
+    return roleList;
+  }
+
+  static saveGame(game) {
+    let gameList = Game.loadGames();
+    gameList.push(game);
+    let gameJSON = JSON.stringify(game);
+
+    fs.writeFileSync("./data/currentGames.json", gameJSON);
+  }
+
+  assignPlayerRoles(users) {
+    let list = [];
+    let role = null;
+    let index = null;
+    let roles = Game.loadRoles();
+
+    users.forEach(function (user) {
+      role = roles[Math.floor(Math.random() * roles.length)];
+      list.push(new Player(user, role));
+      index = roles.indexOf(role);
+      if (index !== -1) {
+        roles.splice(index, 1);
+      }
+    });
+    // set assigned Players to Game object
+    this.Players = list;
+  }
+
+  messagePlayers() {
+    try {
+      this.Players.forEach((player) => {
+        let embed = new MessageEmbed();
+        embed.setColor(Role.colors[player.Role.Color]);
+        embed.setDescription(player.Role.Description);
+        embed.setTitle(player.Role.Title);
+        embed.setThumbnail("attachment://role.png");
+        let message = {
+          embed,
+          files: [
+            {
+              attachment: player.Role.Image,
+              name: "role.png",
+            },
+          ],
+        };
+        player.User.send(message);
+      });
+    } catch (error) {
+      console.error(error);
     }
+  }
 
-    loadRoles(){
-        let roleList = [];
-        let dataFile = fs.readFileSync('./data/roles.json', 'utf8');
-        if(dataFile === '') return roleList;
+  static selectGameByName(name) {
+    let gameList = Game.loadGames();
+    let result = gameList.filter((g) => {
+      return g.Name === name;
+    });
 
-        let roleData = JSON.parse(dataFile);
+    if (result === [] || !result) return Error("Game not found");
 
-        roleData.forEach(element => {
-            roleList.push(new Role(element.roleID, element.title, element.description, element.image, element.color));
-        });
+    return result[0];
+  }
 
-        return roleList;
-    }
-
-    saveGame(game){
-        let gameList = this.loadGames();
-        gameList.push(game);
-        let gameJSON = JSON.stringify(game);
-        
-        fs.writeFileSync('./data/currentGames.json', gameJSON);
-    }
-
-    assignPlayerRoles(users){
-		let list = [];
-        let role = null;
-		let index = null;
-        let roles = this.loadRoles();
-
-		users.forEach(function(user){
-            role = roles[Math.floor(Math.random() * roles.length)];
-            list.push(new Player(user, role));
-			index = roles.indexOf(role);
-			if (index !== -1) {
-				roles.splice(index, 1);
-			}
-		});
-		// set assigned Players to Game object
-		this.Players = list;
-	}
-
-    messagePlayers(){
-        try{
-            this.Players.forEach(player => {
-                let embed = new MessageEmbed();
-                embed.setColor(Role.colors[player.Role.Color]);
-                embed.setDescription(player.Role.Description);
-                embed.setTitle(player.Role.Title);
-                embed.setThumbnail("attachment://role.png");
-                let message = {
-                    embed,
-                    files: [{
-                        attachment: player.Role.Image,
-                        name: 'role.png'
-                    }]
-                }
-                player.User.send(message);
-            });
-        }
-        catch(error){
-            console.error(error);
-        }
-    }
-
-    selectGameByName(name){
-        let gameList = this.loadGames();
-        let result = gameList.filter(g => {
-            return g.Name === name;
-        });
-
-        if(result === [] || !result) return Error('Game not found')
-
-        return result;
-    }
-
-
-}
+  static revealRoles(gameList) {
+    //Do Reveal message
+  }
+};
