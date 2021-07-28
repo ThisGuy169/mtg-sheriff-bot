@@ -7,8 +7,12 @@ module.exports = {
     if (message === "") {
       return message.channel.send("No Sheriff Game name given.");
     }
+    if (args[0] === "") {
+      return message.channel.send("No Sheriff Game name given.");
+    }
 
-    let revealGame = Game.selectGameByName(message);
-    Game.revealRoles(revealGame);
+    let revealGame = Game.selectGameByName(args[0]);
+    let embedMessage = Game.revealRoles(revealGame);
+    message.reply(embedMessage);
   },
 };

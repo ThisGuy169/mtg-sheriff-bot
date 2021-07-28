@@ -12,7 +12,7 @@ module.exports = class Game {
   }
 
   createName() {
-    let gameList = this.loadGames();
+    let gameList = Game.loadGames();
     let gameName = randomWords({
       exactly: 1,
       wordsPerString: 2,
@@ -137,8 +137,18 @@ module.exports = class Game {
     return result[0];
   }
 
-
   static revealRoles(gameList) {
-    //Do Reveal message
+    let revealEmbed = new MessageEmbed();
+    let playerOrder = gameList.Players.sort((a, b) =>
+      a.Role.RoleID > b.Role.RoleID ? 1 : -1
+    );
+    let emotes = Role.emotes;
+    playerOrder.forEach((player) => {
+      revealEmbed.addField(
+        `${player.User.tag}`,
+        `${player.Role.Title} ${emotes[player.Role.Color]}`
+      );
+    });
+    return revealEmbed;
   }
 };

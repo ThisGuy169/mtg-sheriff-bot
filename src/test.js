@@ -5,7 +5,6 @@ const Player = require("../src/player.js");
 const Game = require("../src/game.js");
 let role = new Role();
 let player = new Player();
-console.log(Role.colors);
 
 // let game = new Game((Name = null), "me", Date.now(), null);
 
@@ -13,8 +12,9 @@ console.log(Role.colors);
 
 // game.saveGame(game);
 
-let newGame = Game.selectGameByName("easily-though");
-console.log(newGame);
+let revealGame = Game.selectGameByName("speak-harbor");
+let message = Game.revealRoles(revealGame);
+console.log(message);
 
 // let players = ['1', '2', '3', '4', '5'];
 // let creator = `me`;
