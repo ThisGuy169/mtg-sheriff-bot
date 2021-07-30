@@ -7,14 +7,14 @@ let role = new Role();
 let player = new Player();
 
 // let game = new Game((Name = null), "me", Date.now(), null);
-
+try {
+  let game = Game.selectGameByName("some-string");
+} catch (error) {
+  console.log(error);
+}
 // console.log(game);
 
 // game.saveGame(game);
-
-let revealGame = Game.selectGameByName("speak-harbor");
-let message = Game.revealRoles(revealGame);
-console.log(message);
 
 // let players = ['1', '2', '3', '4', '5'];
 // let creator = `me`;

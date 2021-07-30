@@ -79,7 +79,7 @@ module.exports = class Game {
   static saveGame(game) {
     let gameList = Game.loadGames();
     gameList.push(game);
-    let gameJSON = JSON.stringify(game);
+    let gameJSON = JSON.stringify(gameList);
 
     fs.writeFileSync("./data/currentGames.json", gameJSON);
   }
@@ -132,7 +132,7 @@ module.exports = class Game {
       return g.Name === name;
     });
 
-    if (result === [] || !result) return Error("Game not found");
+    if (result === [] || !result.length) throw new Error("Game not found");
 
     return result[0];
   }
@@ -150,5 +150,16 @@ module.exports = class Game {
       );
     });
     return revealEmbed;
+  }
+
+  static removeGameByName(gameName) {
+    let gameList = Game.loadGames();
+    gameList = gameList.filter((g) => {
+      return g.Name !== gameName;
+    });
+
+    let gameJSON = JSON.stringify(gameList);
+
+    fs.writeFileSync("./data/currentGames.json", gameJSON);
   }
 };
