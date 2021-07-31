@@ -5,7 +5,8 @@
         "title": "Sheriff",
         "description": "- Be the last man standing at all costs!\n- Defeat the Outlaws and the Renegade.\n- Reveal your role.\n- Start at 60 life.\n- You start your turn first.",
         "image": "images/W.png",
-        "color": "gold"
+        "color": "gold",
+        "emote": ":white_circle:"
     },
     {
         "__type__": "Role",
@@ -13,7 +14,8 @@
         "title": "Deputy",
         "description": "- Assist the Sheriff!\n- Defeat the Outlaws and the Renegade.\n- You win as long as the sheriff is the last man standing.",
         "image": "images/G.png",
-        "color": "lightGreen"
+        "color": "lightGreen",
+        "emote": ":green_circle:"
     },
     {
         "__type__": "Role",
@@ -21,7 +23,8 @@
         "title": "Renegade",
         "description": "- You're the wildcard! Use your wit...\n- Before defeating the Sheriff, you must defeat the Outlaws first.",
         "image": "images/U.png",
-        "color": "blue"
+        "color": "blue",
+        "emote": ":blue_circle:"
     },
     {
         "__type__": "Role",
@@ -29,7 +32,8 @@
         "title": "Outlaw: Red",
         "description": "- Work with the other Outlaw to defeat the Sheriff as soon as possible!",
         "image": "images/R.png",
-        "color": "red"
+        "color": "red",
+        "emote": ":red_circle:"
     },
     { 
         "__type__": "Role",
@@ -37,6 +41,7 @@
         "title": "Outlaw: Black",
         "description": "- Work with the other Outlaw to defeat the Sheriff as soon as possible!",
         "image": "images/B.png",
-        "color": "darkGray"
+        "color": "darkGray",
+        "emote": ":black_circle:"
     }
 ]

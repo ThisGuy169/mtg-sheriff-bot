@@ -6,18 +6,12 @@ module.exports = class Role {
     red: 0xe74c3c,
     darkGray: 0x607d8b,
   };
-  static emotes = {
-    gold: ":white_circle:",
-    lightGreen: ":green_circle:",
-    blue: ":blue_circle:",
-    red: ":red_circle:",
-    darkGray: ":black_circle:",
-  };
-  constructor(roleID, title, description, image, color) {
+  constructor(roleID, title, description, image, color, emote) {
     this.RoleID = roleID;
     this.Title = title;
     this.Description = description;
     this.Image = image;
     this.Color = color;
+    this.Emote = emote;
   }
 };

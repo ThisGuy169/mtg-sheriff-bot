@@ -1,8 +1,8 @@
-const fs = require("fs");
-const { MessageEmbed } = require("discord.js");
-const Player = require("../src/player.js");
-const Role = require("../src/role.js");
-const randomWords = require("random-words");
+const fs = require('fs');
+const { MessageEmbed } = require('discord.js');
+const Player = require('../src/player.js');
+const Role = require('../src/role.js');
+const randomWords = require('random-words');
 module.exports = class Game {
   constructor(name, creator, createdOn, users) {
     this.Name = name ?? this.createName();
@@ -16,14 +16,14 @@ module.exports = class Game {
     let gameName = randomWords({
       exactly: 1,
       wordsPerString: 2,
-      separator: "-",
+      separator: '-',
       maxLength: 6,
     })[0];
     while (gameList.some((g) => g.Name === gameName)) {
       gameName = randomWords({
         exactly: 1,
         wordsPerString: 2,
-        separator: "-",
+        separator: '-',
         maxLength: 6,
       })[0];
     }
@@ -33,8 +33,8 @@ module.exports = class Game {
 
   static loadGames() {
     let gameList = [];
-    let dataFile = fs.readFileSync("./data/currentGames.json", "utf8");
-    if (dataFile === "") return gameList;
+    let dataFile = fs.readFileSync('./data/currentGames.json', 'utf8');
+    if (dataFile === '') return gameList;
 
     let gameData = JSON.parse(dataFile);
     if (!Array.isArray(gameData)) {
@@ -56,8 +56,8 @@ module.exports = class Game {
 
   static loadRoles() {
     let roleList = [];
-    let dataFile = fs.readFileSync("./data/roles.json", "utf8");
-    if (dataFile === "") return roleList;
+    let dataFile = fs.readFileSync('./data/roles.json', 'utf8');
+    if (dataFile === '') return roleList;
 
     let roleData = JSON.parse(dataFile);
 
@@ -68,7 +68,8 @@ module.exports = class Game {
           element.title,
           element.description,
           element.image,
-          element.color
+          element.color,
+          element.emote
         )
       );
     });
@@ -81,7 +82,7 @@ module.exports = class Game {
     gameList.push(game);
     let gameJSON = JSON.stringify(gameList);
 
-    fs.writeFileSync("./data/currentGames.json", gameJSON);
+    fs.writeFileSync('./data/currentGames.json', gameJSON);
   }
 
   assignPlayerRoles(users) {
@@ -109,13 +110,13 @@ module.exports = class Game {
         embed.setColor(Role.colors[player.Role.Color]);
         embed.setDescription(player.Role.Description);
         embed.setTitle(player.Role.Title);
-        embed.setThumbnail("attachment://role.png");
+        embed.setThumbnail('attachment://role.png');
         let message = {
           embed,
           files: [
             {
               attachment: player.Role.Image,
-              name: "role.png",
+              name: 'role.png',
             },
           ],
         };
@@ -132,21 +133,39 @@ module.exports = class Game {
       return g.Name === name;
     });
 
-    if (result === [] || !result.length) throw new Error("Game not found");
+    if (result === [] || !result.length) throw new Error('Game not found');
 
     return result[0];
   }
 
-  static revealRoles(gameList) {
+  static selectLatestGameByCreator(creator) {
+    let gameList = Game.loadGames();
+    let creatorGames = gameList.filter((g) => {
+      return g.Creator === creator;
+    });
+
+    let orderedGames = creatorGames.sort((a, b) => {
+      return a.CreatedOn < b.CreatedOn ? 1 : -1;
+    });
+
+    if (orderedGames === [] || !orderedGames.length)
+      throw new Error('No Game found for this user');
+
+    return orderedGames[0];
+  }
+
+  static revealRoles(game) {
     let revealEmbed = new MessageEmbed();
-    let playerOrder = gameList.Players.sort((a, b) =>
+    let playerOrder = game.Players.sort((a, b) =>
       a.Role.RoleID > b.Role.RoleID ? 1 : -1
     );
-    let emotes = Role.emotes;
+
+    revealEmbed.addField(`Game`, `${game.Name}`);
+
     playerOrder.forEach((player) => {
       revealEmbed.addField(
         `${player.User.tag}`,
-        `${player.Role.Title} ${emotes[player.Role.Color]}`
+        `${player.Role.Title} ${player.Role.Emote}`
       );
     });
     return revealEmbed;
@@ -160,6 +179,6 @@ module.exports = class Game {
 
     let gameJSON = JSON.stringify(gameList);
 
-    fs.writeFileSync("./data/currentGames.json", gameJSON);
+    fs.writeFileSync('./data/currentGames.json', gameJSON);
   }
 };
