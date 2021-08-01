@@ -1,14 +1,15 @@
 // empty file for right now
 
-const Role = require("../src/role.js");
-const Player = require("../src/player.js");
-const Game = require("../src/game.js");
+const Role = require('./role.js');
+const Player = require('./player.js');
+const Game = require('./game.js');
 let role = new Role();
 let player = new Player();
 
 // let game = new Game((Name = null), "me", Date.now(), null);
 try {
-  let game = Game.selectGameByName("some-string");
+  let game = Game.selectGameByName('month-since');
+  console.log('🚀 ~ file: playground.js ~ line 12 ~ game', game);
 } catch (error) {
   console.log(error);
 }
