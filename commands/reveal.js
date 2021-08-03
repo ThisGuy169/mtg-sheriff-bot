@@ -11,7 +11,7 @@ module.exports = {
     try {
       let revealGame =
         args.length !== 0
-          ? Game.selectGameByName(args[0])
+          ? Game.selectGameByName(args[0], `${message.author.tag}`)
           : Game.selectLatestGameByCreator(`${message.author.tag}`);
       let embedMessage = Game.revealRoles(revealGame);
       Game.removeGameByName(revealGame.Name);

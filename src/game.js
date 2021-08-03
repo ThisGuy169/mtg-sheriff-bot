@@ -10,7 +10,9 @@ module.exports = class Game {
     this.CreatedOn = createdOn;
     this.Players = users;
   }
-
+  /**
+   * Generated unique name. If name exists in gameList then a new one will generated until no duplicate is found
+   */
   createName() {
     let gameList = Game.loadGames();
     let gameName = randomWords({
@@ -30,7 +32,9 @@ module.exports = class Game {
 
     return gameName;
   }
-
+  /**
+   * Returns [] of Games loaded rom currentGames.json
+   */
   static loadGames() {
     let gameList = [];
     let dataFile = fs.readFileSync('./data/currentGames.json', 'utf8');
@@ -53,7 +57,9 @@ module.exports = class Game {
 
     return gameList;
   }
-
+  /**
+   * Returns [] of Roles loaded from roles.json file
+   */
   static loadRoles() {
     let roleList = [];
     let dataFile = fs.readFileSync('./data/roles.json', 'utf8');
@@ -76,7 +82,10 @@ module.exports = class Game {
 
     return roleList;
   }
-
+  /**
+   * Saved Game object to currentGames.json
+   * @param  {Game} game
+   */
   static saveGame(game) {
     let gameList = Game.loadGames();
     gameList.push(game);
@@ -84,7 +93,9 @@ module.exports = class Game {
 
     fs.writeFileSync('./data/currentGames.json', gameJSON);
   }
-
+  /**
+   * @param  {Player[]} users
+   */
   assignPlayerRoles(users) {
     let list = [];
     let role = null;
@@ -102,7 +113,9 @@ module.exports = class Game {
     // set assigned Players to Game object
     this.Players = list;
   }
-
+  /**
+   * Constructs an embed message to send to each User in the Player[] for the current game object
+   */
   messagePlayers() {
     try {
       this.Players.forEach((player) => {
@@ -126,18 +139,25 @@ module.exports = class Game {
       console.error(error);
     }
   }
-
-  static selectGameByName(name) {
+  /**
+   * Returns game to matches the name and creator values
+   * @param  {string} name
+   * @param  {string} creator
+   */
+  static selectGameByName(name, creator) {
     let gameList = Game.loadGames();
     let result = gameList.filter((g) => {
-      return g.Name === name;
+      return g.Name === name && g.Creator === creator;
     });
 
     if (result === [] || !result.length) throw new Error('Game not found');
 
     return result[0];
   }
-
+  /**
+   * Returns most recent game created by the creator value
+   * @param  {string} creator
+   */
   static selectLatestGameByCreator(creator) {
     let gameList = Game.loadGames();
     let creatorGames = gameList.filter((g) => {
@@ -153,7 +173,10 @@ module.exports = class Game {
 
     return orderedGames[0];
   }
-
+  /**
+   * Returns embed message that lists all the Players and their roles
+   * @param  {Game} game
+   */
   static revealRoles(game) {
     let revealEmbed = new MessageEmbed();
     let playerOrder = game.Players.sort((a, b) =>
@@ -170,7 +193,10 @@ module.exports = class Game {
     });
     return revealEmbed;
   }
-
+  /**
+   * Removed game entry from currentGames.json
+   * @param  {string} gameName
+   */
   static removeGameByName(gameName) {
     let gameList = Game.loadGames();
     gameList = gameList.filter((g) => {
