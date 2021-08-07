@@ -40,7 +40,17 @@ describe('Sheriff Game', function () {
 
   it('Saves game and loads game', function () {
     Game.saveGame(game);
-    let loadedGame = Game.selectGameByName(testGameTemplate.Name);
+    let loadedGame = Game.selectGameByName(
+      testGameTemplate.Name,
+      testGameTemplate.Creator
+    );
     expect(loadedGame).toEqual(testGameTemplate);
+  });
+
+  it('Deletes the game', function () {
+    Game.removeGameByName(game.Name);
+    let dataFile = fs.readFileSync('./data/currentGames.json', 'utf8');
+    let gameData = JSON.parse(dataFile);
+    expect(gameData).toEqual([]);
   });
 });

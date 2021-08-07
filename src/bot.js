@@ -6,6 +6,10 @@ const fs = require('fs');
 const { Collection, Client } = require('discord.js');
 // grabs bot prefix (!)
 const prefix = process.env.DISCORD_BOT_PREFIX;
+// for clean up job
+const nodeSchedule = require('node-schedule');
+// gets Game class
+const Game = require('../src/game.js');
 
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
@@ -48,4 +52,9 @@ client.on('message', (message) => {
     console.error(error);
     // message.reply('there was an error trying to execute that command!');
   }
+});
+
+let cleanUpJob = nodeSchedule.scheduleJob('0 */6 * * *', function () {
+  // Every 6 hours when at 0 minute mark:
+  Game.cleanUpOldGames();
 });

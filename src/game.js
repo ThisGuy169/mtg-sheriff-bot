@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const Player = require('../src/player.js');
 const Role = require('../src/role.js');
 const randomWords = require('random-words');
+
 module.exports = class Game {
   constructor(name, creator, createdOn, users) {
     this.Name = name ?? this.createName();
@@ -13,6 +14,7 @@ module.exports = class Game {
   /**
    * Generated unique name. If name exists in gameList then a new one will generated until no duplicate is found
    */
+
   createName() {
     let gameList = Game.loadGames();
     let gameName = randomWords({
@@ -201,6 +203,26 @@ module.exports = class Game {
     let gameList = Game.loadGames();
     gameList = gameList.filter((g) => {
       return g.Name !== gameName;
+    });
+
+    let gameJSON = JSON.stringify(gameList);
+
+    fs.writeFileSync('./data/currentGames.json', gameJSON);
+  }
+  /**
+   * Removes Game objects older than 6 hours
+   */
+  static cleanUpOldGames() {
+    let expiredTime = new Date(Date.now());
+    expiredTime.setHours(expiredTime.getHours() - 6);
+    let date = expiredTime.toLocaleDateString('en-US');
+    let time = expiredTime.toLocaleTimeString('en-US');
+    let fullExpiredTime = new Date(`${date} ${time}`);
+    let gameList = Game.loadGames();
+
+    gameList = gameList.filter((g) => {
+      // only return Games that have a CreatedOn greater than the expiredTime meaning they were made after that time
+      return new Date(g.CreatedOn) > fullExpiredTime;
     });
 
     let gameJSON = JSON.stringify(gameList);
