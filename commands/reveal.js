@@ -4,10 +4,6 @@ module.exports = {
   name: 'reveal',
   description: 'Reveals the roles from the previous game',
   execute(client, message, args) {
-    if (message === '') {
-      return message.channel.send('No Sheriff Game name given.');
-    }
-
     try {
       let revealGame =
         args.length !== 0

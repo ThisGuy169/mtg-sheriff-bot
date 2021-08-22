@@ -90,7 +90,8 @@ module.exports = class Game {
    */
   static saveGame(game) {
     let gameList = Game.loadGames();
-    gameList.push(game);
+    let miniGame = Game.minimizeGameObject(game);
+    gameList.push(miniGame);
     let gameJSON = JSON.stringify(gameList);
 
     fs.writeFileSync('./data/currentGames.json', gameJSON);
@@ -228,5 +229,29 @@ module.exports = class Game {
     let gameJSON = JSON.stringify(gameList);
 
     fs.writeFileSync('./data/currentGames.json', gameJSON);
+  }
+
+  /**
+   * Removes unneeded Game fields to make stored data smaller
+   */
+  static minimizeGameObject(game) {
+    let { Name, Creator, CreatedOn } = game;
+
+    let Players = [];
+
+    game.Players.forEach((element) => {
+      Players.unshift({
+        User: element.User,
+        Role: {
+          RoleID: element.Role.RoleID,
+          Title: element.Role.Title,
+          Emote: element.Role.Emote,
+        },
+      });
+    });
+
+    let miniGame = { Name, Creator, CreatedOn, Players };
+
+    return miniGame;
   }
 };

@@ -5,12 +5,14 @@ module.exports = {
   description: 'Create new sheriff game',
   execute(client, message, args) {
     let numberOfPlayers = message.mentions.users.size;
-    // if(numberOfPlayers < 5){
-    //     return message.channel.send('Five players are needed for a game of sheriff');
-    // }
-    // if(numberOfPlayers > 5){
-    //     return message.channel.send('Too many players for a game of sheriff');
-    // }
+    if (numberOfPlayers < 5) {
+      return message.channel.send(
+        'Five players are needed for a game of sheriff'
+      );
+    }
+    if (numberOfPlayers > 5) {
+      return message.channel.send('Too many players for a game of sheriff');
+    }
 
     let creator = `${message.author.tag}`;
     let now = new Date(Date.now());
